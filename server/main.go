@@ -22,7 +22,13 @@ func validateToken(token string) bool {
 
 func shutdownHandler(w http.ResponseWriter, r *http.Request) {
 	// validate token
-	bearerToken := string(strings.Split(r.Header.Get("Authorization"), " ")[1])
+	authHeader := r.Header.Get("Authorization")
+	var bearerToken string
+	if authHeader == "" { // check if auth header not received
+		bearerToken = ""
+	} else {
+		bearerToken = string(strings.Split(r.Header.Get("Authorization"), " ")[1])
+	}
 	if !validateToken(bearerToken) {
 		fmt.Fprint(w, "Invalid token")
 		return
