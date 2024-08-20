@@ -34,13 +34,12 @@ func shutdownHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// initiate shutdown
+	fmt.Fprint(w, "The system will shutdown now")
 	err := exec.Command("sudo", "shutdown", "-h", "now").Run()
 	if err != nil {
 		fmt.Fprint(w, err)
 		log.Println(err)
-		return
 	}
-	fmt.Fprint(w, "The system will shutdown now")
 }
 
 func main() {
