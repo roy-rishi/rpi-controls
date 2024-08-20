@@ -11,8 +11,6 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var PORT int = 3009
-
 func validateToken(token string) bool {
 	localToken := string(os.Getenv("TOKEN"))
 	// don't use authentication if TOKEN=none in .env
@@ -41,6 +39,9 @@ func shutdownHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	godotenv.Load(".env")
+	port := os.Getenv("PORT")
 	http.HandleFunc("/shutdown", shutdownHandler)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", PORT), nil))
+
+	log.Println("Listening on port 3009")
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
